@@ -1,0 +1,52 @@
+﻿@model HivOhoiModel
+
+<div class="container col-xxl-8 px-4 py-5 mt-5">
+    <div class="row gy-2 h-100 row-cols-md-2 row-cols-1">
+        <div class="col border-2 border-end">
+            <h1 class="fw-bold lh-1 mb-3">HivOhoi</h1>
+            <h4 class="lead">
+                This application will consider the two numbers entered for each number between 1 and 100.
+                It will print "Hiv" for the numbers that are divisible by the first number. "Ohoi" will be printed for the numbers divisible by the second number.
+                "HivOhoi" for the numbers divisible by both and simply print the number if it`s not divisible by either.
+            </h4>
+            <h2 class="mt-5 border-bottom border-2">Instructions</h2>
+            <p>
+                Enter 2 numbers. The first number will be used to evaluate "Hiv".
+                The second number will be used to evaluate "Ohoi" and "HivOhoi" will be determined based on the combination of the two numbers.
+            </p>
+        </div>
+        <div class="col">
+            <div>
+                <h5>Enter Numbers</h5>
+                <form asp-controller="Home" asp-action="HivOhoi" method="post">
+                    <div class="form-group mb-2">
+                        <label asp-for="HivValue">Hiv Value</label>
+                        <input type="number" asp-for="HivValue" class="form-control" placeholder="Enter Hiv Value" value="@Model.HivValue" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="OhoiValue">Ohoi Value</label>
+                        <input type="number" asp-for="OhoiValue" class="form-control" placeholder="Enter Ohoi Value" value="@Model.OhoiValue" />
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Hiv Ohoi!</button>
+                </form>
+                <h2 class="mt-5 border-bottom border-2">Results</h2>
+                <div class="table-responsive">
+                    @if (Model.Result.Count > 0)
+                    {
+                        <table class="table-striped table-hover table table-dark">
+                            <thead>
+                                <tr><th colspan="5">HivOhoi Results</th></tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Result.Count(); i+=5)
+                                {
+                                    <tr><td>@Model.Result[i]</td><td>@Model.Result[i + 1]</td><td>@Model.Result[i + 2]</td><td>@Model.Result[i + 3]</td><td>@Model.Result[i + 4]</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
