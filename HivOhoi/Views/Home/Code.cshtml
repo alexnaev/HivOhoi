@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Code";
+}
+<div class="container py-5 px-5 mt-5">
+    <h2 class="border-1 border-bottom border-dark">The Code for HivOhoi.</h2>
+    <div class="row row-cols-1 row-cols-lg-2">
+        <div class="col-lg-8">
+            <pre class="line-numbers"><code class="language-csharp">
+                //The Model
+                public class HivOhoiModel
+                {
+                    public int HivValue { get; set; }
+                    public int OhoiValue { get; set; }
+                    public List< string > Result { get; set; } = new();
+                }
+
+                //The Controller
+                [HttpGet]
+                public IActionResult HivOhoi()
+                {
+                    HivOhoiModel model = new();
+
+                    model.HivValue = 3;
+                    model.OhoiValue = 5;
+
+                    return View(model);
+                }
+
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public IActionResult HivOhoi(HivOhoiModel hivOhoi)
+                {
+                    List< string > hoItems = new();
+
+                    bool hiv;
+                    bool ohoi;
+
+                    for(int i = 1; i <= 100; i++)
+                    {
+                        hiv = (i % hivOhoi.HivValue == 0);
+                        ohoi = (i % hivOhoi.OhoiValue == 0);
+
+                        if (hiv && ohoi)
+                        {
+                            hoItems.Add("HivOhoi");
+                        }
+                        else if (ohoi)
+                        {
+                            hoItems.Add("Ohoi");
+                        }
+                        else if (hiv)
+                        {
+                            hoItems.Add("Hiv");
+                        }
+                        else
+                        {
+                            hoItems.Add(i.ToString());
+                        }
+                    }
+
+                    hivOhoi.Result = hoItems;
+
+                    return View(hivOhoi);
+                }
+
+                //The View (some workaround needed due to HTML not rendering correctly 
+                //and to avoid razor synthax running, se source code in Git)
+                < div class="table-responsive" >
+                    if (Model.Result.Count > 0)
+                    {
+                        < table class="table-striped table-hover table table-dark" >
+                            < thead >
+                                < tr >< th colspan="5">HivOhoi Results< /th >< /tr >
+                            < /thead >
+                            < tbody >
+                            for (int i = 0; i < Model.Result.Count(); i += 5)
+                            {
+                                < tr >
+                                    < td class="Model.Result[i]" >Model.Result[i]< /td >
+                                    < td class="Model.Result[i + 1]" >Model.Result[i + 1]< /td >
+                                    < td class="Model.Result[i + 2]" >Model.Result[i + 2]< /td >
+                                    < td class="Model.Result[i + 3]" >Model.Result[i + 3]< /td >
+                                    < td class="Model.Result[i + 4]" >Model.Result[i + 4]< /td >
+                                < /tr >
+                            }
+                            < /tbody >
+                        < /table >
+                    }
+                < /div >
+                </code>
+                </pre>
+        </div>
+        <div class="col-lg-4">
+            <p>HivOhoi is written in ASP.NET Core MVC using C# and .NET6. The C# code (specific to the app`s number functionality) is structed in an object and two action result methods.</p>
+            <h5>Get Method</h5>
+            <p>The get method is an IActionResult method called HivOhoi, which simply combines the object and the view and returns the view in response to an http get request.</p>
+            <h5>Post Method</h5>
+            <p>The post method is an IActionResult method also called HivOhoi. This method is run in response to an http post request, and takes in an object containing user input data and a list of string. The input data stored in the object is then run through a for loop counting from 1 to 100 and checking if the current number in the sequence is divisible by the Hiv value (3 by default), the Ohoi value (5 by default) or both. Each run either "Hiv", "Ohoi", "HivOhoi" or the number itself is added to a local list of string, later to be copied to the objects list of string property (Result). The object is then combined with the correct view which is returned in response to the post request.</p>
+            <h5>The Object</h5>
+            <p>The object (or model) is a class called HivOhoiModel. This object has three properties: HivValue (int), OhoiValue (int) and Result (list of string). The HivOhoiModel object is used to share data between the view and the controller, and its properties are accessed from the view using Razor synthax.</p>
+            <h5>The View</h5>
+            <p>The view is a cshtml page for interacting with the app, and displaying the results. Using razor synthax we can display the results in a table of 5 coloumns, which will only appear if there are any results to display. The table rows are printed using a for loop which increrments by 5 each run, displaying 5 list items from the Model.Result list.</p>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/prism.js"></script>
+<script src="~/js/prism-csharp.js"></script>
+<script>
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true
+    })
+</script>

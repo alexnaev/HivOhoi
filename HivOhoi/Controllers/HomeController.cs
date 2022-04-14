@@ -66,7 +66,7 @@ namespace HivOhoi.Controllers
             return View(hivOhoi);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Code()
         {
             return View();
         }
